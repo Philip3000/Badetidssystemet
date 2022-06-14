@@ -22,8 +22,8 @@ namespace Badetidssystemet
 
             _type = type;
             _ugedag = ugedag;
-            _startTidspunkt = startTidspunkt;
-            _slutTidspunkt = slutTidspunkt;
+            StartTidspunkt = startTidspunkt;
+            SlutTidspunkt = slutTidspunkt;
             _kredse = kredse;
         }
         #endregion
@@ -40,7 +40,7 @@ namespace Badetidssystemet
                 }
                 else
                 {
-                    Console.WriteLine("Type must be more than 4 characters");
+                    throw new ArgumentException("Type must be more than 4 characters");
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace Badetidssystemet
                 }
                 else
                 {
-                    Console.WriteLine("Start er senere end slut");
+                    throw new ArgumentException("Start er senere end slut");
                 }
             }
         }

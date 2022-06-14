@@ -19,7 +19,7 @@ namespace Badetidssystemet
             _id = id;
             _navn = navn;
             _adresse = adresse;
-            _antalDeltagere = antalDeltagere;
+            AntalDeltagere = antalDeltagere;
         }
         #endregion
 
@@ -50,7 +50,7 @@ namespace Badetidssystemet
                 }
                 else
                 {
-                    Console.WriteLine("Antal deltagere skal være større end 0");
+                    throw new ArgumentException("Antal deltagere skal være større end 0");
                 }
             }
         }
