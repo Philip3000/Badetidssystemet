@@ -11,15 +11,18 @@ namespace Badetidssystemet
         string _navn;
         string _adresse;
         int _antalDeltagere;
+        //Som administrator vil jeg gerne have at der skal være en pris på for hver kreds for at besøgene kan se hvor meget det koster.
+        int _pris;
         #endregion
 
         #region Constructor
-        public Kreds(string id, string navn, string adresse, int antalDeltagere)
+        public Kreds(string id, string navn, string adresse, int antalDeltagere, int pris)
         {
             _id = id;
             _navn = navn;
             _adresse = adresse;
-            AntalDeltagere = antalDeltagere;
+            _antalDeltagere = antalDeltagere;
+            _pris = pris;
         }
         #endregion
 
@@ -44,22 +47,24 @@ namespace Badetidssystemet
             get { return _antalDeltagere; }
             set 
             { 
-                if(_antalDeltagere > 0)
-                {
-                    _antalDeltagere = value;
-                }
-                else
+                if(_antalDeltagere == 0)
                 {
                     throw new ArgumentException("Antal deltagere skal være større end 0");
                 }
+                _antalDeltagere = value;
             }
+        }
+        public int Pris
+        {
+            get { return _pris; }
+            set { _pris = value; }
         }
         #endregion
 
         #region methods
         public override string ToString()
         {
-            string message = $"Kreds id: {Id} - Kreds navn: {Navn} - Kreds adresse: {Adresse} - Antal deltagere: {AntalDeltagere}";
+            string message = $"Kreds id: {Id} - Kreds navn: {Navn} - Kreds adresse: {Adresse} - Antal deltagere: {AntalDeltagere} - Pris pr. kvartal: {Pris}";
             return message;
         }
         #endregion

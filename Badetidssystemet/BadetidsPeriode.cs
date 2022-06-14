@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Badetidssystemet
 {
-    class BadetidsPeriode
+    public class BadetidsPeriode
     {
         #region Instance
         string _type;
@@ -13,35 +13,31 @@ namespace Badetidssystemet
         DateTime _slutTidspunkt;
         string _output;
         Dictionary<string, Kreds> _kredse = new Dictionary<string, Kreds>();
-
+        //Som administrator vil jeg gerne kunne lave en beskrivelse for hver badetidsperiode, så gæster lettere kan se hvad det helt præcist går ud på.
+        public string Beskrivelse { get; set; }
         #endregion
 
         #region Constructor
         public BadetidsPeriode(string type, DayOfWeek ugedag, DateTime startTidspunkt, DateTime slutTidspunkt, Dictionary<string, Kreds> kredse)
         {
-
-            _type = type;
             _ugedag = ugedag;
-            StartTidspunkt = startTidspunkt;
-            SlutTidspunkt = slutTidspunkt;
+            _startTidspunkt = startTidspunkt;
+           _slutTidspunkt = slutTidspunkt;
             _kredse = kredse;
+            _type = type;
         }
         #endregion
         #region Properties
         public string Type
         {
             get { return _type; }
-            set 
+            set
             {
-                int d = _type.Length;
-                if (d >= 4)
+                if(_type.Length < 4)
                 {
-                    _type = value;
+                    throw new ArgumentException();
                 }
-                else
-                {
-                    throw new ArgumentException("Type must be more than 4 characters");
-                }
+                _type = value;  
             }
         }
         public DayOfWeek UgeDag
@@ -56,15 +52,12 @@ namespace Badetidssystemet
             {
                 if (_startTidspunkt > _slutTidspunkt)
                 {
-                    _startTidspunkt = value;
+                    throw new ArgumentException();
                 }
-                else
-                {
-                    throw new ArgumentException("Start er senere end slut");
-                }
+                _startTidspunkt = value;
             }
         }
-            
+        
         public DateTime SlutTidspunkt
         {
             get { return _slutTidspunkt; }
@@ -74,20 +67,28 @@ namespace Badetidssystemet
         #region methods
         public override string ToString()
         {
-            string message = $"Type: {Type} - Ugedag: {UgeDag} - Start: {StartTidspunkt} - Slut: {SlutTidspunkt}";
-            foreach (ValueType KeyValue in _kredse)
+            string message = $"Type: {Type} - Ugedag: {UgeDag} - Start: {StartTidspunkt} - Slut: {SlutTidspunkt} - Beskrivelse: {Beskrivelse}";
+            foreach (KeyValuePair<string, Kreds> entry in _kredse)
             {
-                _output += KeyValue;
-            }
+                _output += entry;
+            } 
             return message + "                        " + _output;
         }
-        public void AdderKreds(Kreds kreds)
+        public virtual void AdderKreds(Kreds kreds)
         {
             _kredse.Add(kreds.Id, kreds);
         }
-        public void SletterKreds(string id)
+        public virtual void SletterKreds(string id)
         {
             _kredse.Remove(id);
+        }
+        //User story: Som administrator vil jeg gerne kunne udskrive en liste over alle kredse i dictionary for at jeg kan få et bedre overblik over kredsene kun.
+        public void ReadKreds()
+        {
+            foreach(KeyValuePair<string, Kreds> entry in _kredse)
+            {
+                Console.WriteLine(entry.Value);
+            }
         }
         #endregion
     }
